@@ -1,0 +1,2 @@
+*.qm usr/share/qt5/translations
+debian/qtqr.desktop usr/share/applications

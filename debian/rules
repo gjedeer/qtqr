@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+
+export QT_SELECT := 5
+
+%:
+	dh $@ --buildsystem=pybuild --with python3
+
+ts = $(wildcard qtqr_*.ts)
+qm = $(ts:ts=qm)
+execute_after_dh_auto_build: $(qm)
+$(qm): %.qm: %.ts
+	lrelease -nounfinished $< -qm $@
+
+execute_after_dh_auto_install:
+	install -m 644 qtqr.py  debian/qtqr/usr/bin/qtqr
+	install -m 644 icon.png debian/qtqr/usr/share/pixmaps/qtqr.png

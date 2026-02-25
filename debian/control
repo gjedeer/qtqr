@@ -1,0 +1,43 @@
+Source: qr-tools
+Section: python
+Priority: optional
+Maintainer: Georges Khaznadar <georgesk@debian.org>
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-python,
+ python3,
+ python3-setuptools,
+ qttools5-dev-tools,
+Standards-Version: 4.7.3
+Rules-Requires-Root: no
+Homepage: https://launchpad.net/qr-tools
+Vcs-Git: https://salsa.debian.org/debian/qr-tools.git
+Vcs-Browser: https://salsa.debian.org/debian/qr-tools
+
+Package: python3-qrtools
+Architecture: all
+Depends:
+ python3-pil,
+ python3-zbar,
+ qrencode,
+ libqt5multimedia5-plugins,
+ ${misc:Depends},
+ ${python3:Depends}
+Description: high level library for reading and generating QR codes
+ This package provides high level APIs for reading and creating QR
+ codes with minimal effort on Python. This library uses zbar barcode
+ library.
+
+Package: qtqr
+Architecture: all
+Section: utils
+Depends:
+ python3-qrtools,
+ python3-pyqt5,
+ python3-pyqt5.qtmultimedia,
+ ${misc:Depends},
+ ${python3:Depends}
+Description: Qt frontend for QR code generator and decoder
+ A Qt based software that help you to generate QR codes easily, scan
+ an image file for QR codes and decode them or use your webcam to
+ scan a printed one.

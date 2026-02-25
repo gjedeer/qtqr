@@ -1,0 +1,13 @@
+Known remaining bugs in QtQR
+----------------------------
+
+It is known that if we drag a photo into QtQR, QtQR cannot recongnize it
+if the URL results in a 302 redirection. Previously it will crash, now
+the program will simply fail to decode image and continue to run.
+
+Generating QR images with URL is long broken, which needs to be fixed.
+
+We need to refactor the way temporary files are handled. Perhaps with tempfile
+module.
+
+ -- Boyuan Yang <073plan@gmail.com>  Sat, 23 Sep 2017 21:47:01 +0800

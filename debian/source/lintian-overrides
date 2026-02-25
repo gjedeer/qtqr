@@ -1,0 +1,13 @@
+# those files are still there, until the next upstream version
+# right now, the upstream version is 2.1~bzr46
+
+qr-tools source: source-ships-excluded-file icon.png.old [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_de_DE.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_en_GB.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_es.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_es_AR.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_fr.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_is_IS.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_it_IT.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_ja.qm [debian/copyright:4]
+qr-tools source: source-ships-excluded-file qtqr_ru.qm [debian/copyright:4]

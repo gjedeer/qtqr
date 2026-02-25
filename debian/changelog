@@ -1,0 +1,214 @@
+qr-tools (2.1-fork1) noble; urgency=medium
+
+  * Add decode from clipboard feature (button + Ctrl+V shortcut).
+
+ -- GDR! <gdr@gdr.name>  Wed, 25 Feb 2026 00:00:00 +0000
+
+qr-tools (2.1-2) unstable; urgency=medium
+
+  * added a dependency on package libqt5multimedia5-plugins, which appears
+    as necessary when USB webcams are used.
+  * bumped Standards-Version: 4.7.3
+
+ -- Georges Khaznadar <georgesk@debian.org>  Tue, 17 Feb 2026 18:35:38 +0100
+
+qr-tools (2.1-1) unstable; urgency=medium
+
+  * revived the debian/watch file
+  * New upstream version 2.1
+  * updated the debian patch
+
+ -- Georges Khaznadar <georgesk@debian.org>  Wed, 10 Dec 2025 19:39:25 +0100
+
+qr-tools (2.1~bzr52-2) unstable; urgency=medium
+
+  * new build-dependency: python3-setuptools. Closes: #1080781
+
+ -- Georges Khaznadar <georgesk@debian.org>  Sun, 08 Sep 2024 17:14:11 +0200
+
+qr-tools (2.1~bzr52-1) unstable; urgency=medium
+
+  * New upstream version 2.1~bzr52 (Closes: #721823)
+  * Updated the debian patch
+
+ -- Georges Khaznadar <georgesk@debian.org>  Thu, 23 Nov 2023 19:05:24 +0100
+
+qr-tools (2.1~bzr48-2) unstable; urgency=medium
+
+  * added a dependency on python3-pyqt5.qtmultimedia.
+    Closes: #1056032
+
+ -- Georges Khaznadar <georgesk@debian.org>  Wed, 22 Nov 2023 16:24:13 +0100
+
+qr-tools (2.1~bzr48-1) unstable; urgency=medium
+
+  * New upstream version 2.1~bzr48
+  * updated the debian patch
+
+ -- Georges Khaznadar <georgesk@debian.org>  Tue, 21 Nov 2023 20:22:19 +0100
+
+qr-tools (2.1~bzr47-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Repository-Browse.
+  * Update standards version to 4.6.1, no changes needed.
+
+  [ Georges Khaznadar ]
+  * New upstream version 2.1~bzr47
+  * refreshed the debian patch
+
+ -- Georges Khaznadar <georgesk@debian.org>  Sat, 11 Nov 2023 11:28:38 +0100
+
+qr-tools (2.1~bzr46-4) unstable; urgency=medium
+
+  * applied patched kindly provided by Nicolas Boulenguez, thanks!
+    - replaced get-orig-source in d/rules by files-excluded in d/copyright
+    - replaced clean-after.. in d/rules by file d/clean
+    - updated copyright's date for the packaging
+    - replaced a shell loop by a make loop in d/rules
+    - removed unneeded CURDIR in d/rules
+  * added the option --with python3 in d/rules
+  * created a file d/sources/lintian-overrides as excluded files are still
+    there (until the next upstream version)
+
+ -- Georges Khaznadar <georgesk@debian.org>  Fri, 20 May 2022 10:59:53 +0200
+
+qr-tools (2.1~bzr46-3) unstable; urgency=medium
+
+  * uploaded the source package again, in order to have it compiled with
+    Python3.10. Closes: #1010192
+
+ -- Georges Khaznadar <georgesk@debian.org>  Fri, 06 May 2022 14:02:13 +0200
+
+qr-tools (2.1~bzr46-2) unstable; urgency=medium
+
+  * adopted the package. Closes: #864586
+  * patched both Python files to manage the error when the webcam is already
+    busy with another application. Closes: #961503
+  * replaced the build dependency dh-sequence-python3 by dh-python
+
+ -- Georges Khaznadar <georgesk@debian.org>  Tue, 18 Jan 2022 16:18:31 +0100
+
+qr-tools (2.1~bzr46-1) unstable; urgency=medium
+
+  * QA upload.
+  * New upstream version (revision 46).
+  * debian/watch: Monitor upstream bzr HEAD.
+
+ -- Boyuan Yang <byang@debian.org>  Tue, 26 Oct 2021 15:32:56 -0400
+
+qr-tools (2.1~bzr45-1) unstable; urgency=medium
+
+  * QA upload.
+  * New upstream trunk snapshot.
+  * Refresh packaging:
+    + Bump Standards-Version to 4.6.0.
+    + Bump debhelper compat to v13.
+  * debian/patches: Dropped, merged upstream.
+
+ -- Boyuan Yang <byang@debian.org>  Thu, 30 Sep 2021 14:24:29 -0400
+
+qr-tools (2.0~bzr33-2) unstable; urgency=medium
+
+  * Refresh patch to bump version to 2.0
+    - thanks Infinity for the check and hint
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Tue, 15 Oct 2019 11:22:42 +0200
+
+qr-tools (2.0~bzr33-1) unstable; urgency=medium
+
+  * QA upload.
+  * New upstream release, Python3 ready
+  * Migrate the package to Python3 (Closes: #941888, #932865, #938317)
+  * Bump compat level to 12
+  * Bump std-version to 4.4.1
+  * Refresh patches
+  * Set R^3 to no
+  * Use pkg-info to avoid dpkg-parsechangelog calls
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Tue, 15 Oct 2019 10:21:01 +0200
+
+qr-tools (1.4~bzr32-1) unstable; urgency=medium
+
+  * QA upload.
+  * New upstream snapshot, apparently includes all Debian patches
+    + fixes attempted saving of generated PNG files on non-sense
+      locations (closes: #884853, #900571)
+  * changed orig.tar compression to xz, added irrelevant changes to ignore
+    patterns of dpkg-source
+  * Added 02_no_crash_on_bad_input.patch to catch fatal exception while
+    entering an invalid (incomplete) URL for QR code generation
+
+ -- Eduard Bloch <blade@debian.org>  Fri, 28 Dec 2018 23:42:41 +0100
+
+qr-tools (1.4~bzr23-1) unstable; urgency=high
+
+  * QA upload.
+    + Set package maintainer to Debian QA Group.
+  * New upstream snapshot.
+    + Fix incompatibility with new PIL library.
+      (Closes: #812556; Closes: #847150)
+    + Add option to select whether to show WiFi password when writing it.
+  * Replace python-imaging dep with python-pil. (Closes: #866475)
+  * Apply wrap-and-sort -abst.
+  * Bump debhelper compat to v10.
+  * Use Standards-Version 4.1.0.
+  * Add patch to migrate to Qt5. (Closes: #875142)
+  * Add patch to prevent crashing when given file is not an image.
+  * Add patch to provide zh_CN translation.
+  * Add patch to fix crashing with malformed URL.
+  * Update qtqr.desktop in debian/ dir.
+    + Add zh_CN translation.
+    + Edit Exec key to comply with Desktop Entry Specification.
+  * Update qtqr.1 man page accordingly.
+  * Set package qtqr in section "utils".
+  * Document all known bugs in debian/BUGS file.
+
+ -- Boyuan Yang <073plan@gmail.com>  Sun, 24 Sep 2017 11:06:21 +0800
+
+qr-tools (1.4~bzr21-1) unstable; urgency=low
+
+  * New upstream revision
+  * debian/patches/101_fix_import_image.patch
+   - imported to upstream
+  * debian/patches/01_setup_script.patch
+   - update for version 1.4
+
+ -- Koichi Akabe <vbkaisetsu@gmail.com>  Sat, 25 Jan 2014 16:53:37 +0900
+
+qr-tools (1.4~bzr16-1) unstable; urgency=medium
+
+  * New upstream revision
+  * Migrate to unstable
+  * debian/100_remove_tmp_files.patch
+   - merged to upstream
+  * debian/rules
+   - add get-orig-source target
+   - add lrelease commands to build translations
+
+ -- Koichi Akabe <vbkaisetsu@gmail.com>  Sun, 29 Dec 2013 14:29:05 +0900
+
+qr-tools (1.2-3~exp1) experimental; urgency=low
+
+  * debian/patches/101_fix_import_image.patch
+   - use Pillow instead of PIL
+  * debian/compat
+   - up to 9
+  * debian/control
+   - update Standards-Version to 3.9.4
+   - change the version of debhelper to 9.0.0 or later
+
+ -- Koichi Akabe <vbkaisetsu@gmail.com>  Mon, 11 Feb 2013 09:39:01 +0900
+
+qr-tools (1.2-2) unstable; urgency=low
+
+  * debian/patches/100_remove_tmp_files.patch
+   - add to remove temporary directory (Closes: #677722)
+
+ -- Koichi Akabe <vbkaisetsu@gmail.com>  Mon, 18 Jun 2012 23:13:49 +0900
+
+qr-tools (1.2-1) unstable; urgency=low
+
+  * Initial release. (Closes: #645746, #645747)
+
+ -- Koichi Akabe <vbkaisetsu@gmail.com>  Wed, 11 Apr 2012 22:43:39 +0900

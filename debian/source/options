@@ -1,0 +1,2 @@
+# ignore sanitized changes
+extend-diff-ignore = "png.old$"
