@@ -28,17 +28,19 @@ jobs:
       - name: Build Debian package
         run: dpkg-buildpackage -us -uc -b
 
+      - name: Collect artifacts
+        run: |
+          mkdir -p dist
+          cp ../*.deb ../*.buildinfo ../*.changes dist/
+
       - name: Upload .deb artifacts
         uses: actions/upload-artifact@v4
         with:
           name: qtqr-deb-ubuntu-24.04
-          path: |
-            ../*.deb
-            ../*.buildinfo
-            ../*.changes
+          path: dist/
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: ../*.deb
+          files: dist/*.deb
