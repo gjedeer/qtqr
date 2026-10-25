@@ -9,8 +9,11 @@ http://www.omgubuntu.co.uk/2011/03/how-to-create-qr-codes-in-ubuntu/
 uses python-zbar for decoding from files and webcam
 """
 
+import fcntl
 import io
 import os
+import re
+import struct
 import sys
 from math import ceil
 
@@ -27,6 +30,67 @@ __copyright__ = "copyright (C) 2011-2020 Ramiro Algozino"
 __credits__ = "David Green, Boyuan Yang, Ying-Chun Liu"
 __license__ = "GPLv3"
 __version__ = "2.1"
+
+# V4L2 constants (stable kernel ABI, see linux/videodev2.h)
+VIDIOC_G_FMT = 0xC0D05604
+V4L2_BUF_TYPE_VIDEO_CAPTURE = 1
+V4L2_FORMAT_SIZE = 208
+
+
+def _probe_v4l2_format(device_path):
+    """Return (width, height, pixel_format) for the device's default format.
+
+    pixel_format is the V4L2 fourcc as bytes. Returns None if the device
+    cannot be probed (not a /dev node, missing permissions, non-Linux, ...).
+    """
+    if not device_path or not device_path.startswith("/dev/"):
+        return None
+    try:
+        fd = os.open(device_path, os.O_RDONLY | os.O_NONBLOCK)
+    except OSError:
+        return None
+    try:
+        buf = bytearray(V4L2_FORMAT_SIZE)
+        struct.pack_into("<I", buf, 0, V4L2_BUF_TYPE_VIDEO_CAPTURE)
+        fcntl.ioctl(fd, VIDIOC_G_FMT, buf)
+        # On 64-bit systems, the union in struct v4l2_format is 8-byte aligned
+        # (due to pointers in struct v4l2_window), leaving 4 bytes of padding
+        # after the 32-bit type field. On 32-bit systems, union starts at offset 4.
+        offset = 8 if struct.calcsize("P") == 8 else 4
+        width, height, fourcc = struct.unpack_from("<II4s", buf, offset)
+        return width, height, fourcc
+    except (OSError, struct.error):
+        return None
+    finally:
+        os.close(fd)
+
+
+def _camera_sort_key(info):
+    """Sort cameras by device node number (/dev/video0 < /dev/video2)."""
+    path = info.deviceName() or ""
+    match = re.search(r"(\d+)$", path)
+    # Names without a trailing number (unexpected formats) sort last.
+    return (int(match.group(1)) if match else float("inf"),
+            info.description(), path)
+
+
+def enumerate_cameras():
+    """Return available cameras as [(QCameraInfo, label, is_ir)].
+
+    The order is stable across runs    
+    """
+    cameras = []
+    for info in sorted(QCameraInfo.availableCameras(), key=_camera_sort_key):
+        fmt = _probe_v4l2_format(info.deviceName())
+        is_ir = bool(fmt) and fmt[2] == b"GREY"
+        extras = [info.deviceName()]
+        if fmt:
+            extras.append("%dx%d" % fmt[:2])
+        label = "%s (%s)" % (info.description(), ", ".join(extras))
+        if is_ir:
+            label += " [IR]"
+        cameras.append((info, label, is_ir))
+    return cameras
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -1061,17 +1125,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def decodeWebcam(self):
         vdDialog = VideoDevices()
-        device_desc = vdDialog.videoDevice.currentText()
         if vdDialog.videoDevice.count() != 1:
             d_res = vdDialog.exec_()
-            device_desc = {
-                QDialog.Rejected: "",
-                QDialog.Accepted: vdDialog.videoDevice.currentText(),
-            }[d_res]
-        device = {
-            device.description(): device.deviceName()
-            for device in QCameraInfo.availableCameras()
-        }.get(device_desc, None)
+            if d_res == QDialog.Rejected:
+                return
+        device = vdDialog.videoDevice.currentData()
 
         if device:
             qr = QR()
@@ -1285,9 +1343,16 @@ class VideoDevices(QtWidgets.QDialog):
         self.layout.addStretch()
         self.layout.addWidget(self.Buttons)
         self.setLayout(self.layout)
-        self.videoDevice.addItems(
-            [info.description() for info in QCameraInfo.availableCameras()]
+        cameras = enumerate_cameras()
+        for info, label, is_ir in cameras:
+            # Store the device node path; identical descriptions would
+            # otherwise be indistinguishable when looking up the selection.
+            self.videoDevice.addItem(label, info.deviceName())
+        # Default to the first camera that is not an IR sensor.
+        default_index = next(
+            (i for i, (_, _, is_ir) in enumerate(cameras) if not is_ir), 0
         )
+        self.videoDevice.setCurrentIndex(default_index)
 
 
 if __name__ == "__main__":
